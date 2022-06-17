@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 struct mid_value_t
 {
     int mid;
@@ -110,7 +112,7 @@ void even_mid(struct mid_value_t *mid_value, int *nums1, int nums1Size, int *num
         {
             mid_value->count1 = nums1[mid_value->count1] > nums2[mid_value->count2 + 1] ? \
                                 nums2[mid_value->count2 + 1] : nums1[mid_value->count1];
-            mid_value->count2 = nums1[mid_value->count1];
+            mid_value->count2 = nums2[mid_value->count2];
         }
     }
 }
@@ -150,9 +152,9 @@ double func(int *nums1, int nums1Size, int *nums2, int nums2Size)
 
     find_mid(&mid_value, nums1, nums1Size, nums2, nums2Size);
 
-    if (mid_value.count1)
+    if (mid_value.flag == 0 || mid_value.flag == 1)
         mid_value.count1--;
-    if (mid_value.count2)
+    else if (mid_value.flag == 2 || mid_value.flag == 3)
         mid_value.count2--;
 
     if (mid_value.parity)
@@ -163,4 +165,4 @@ double func(int *nums1, int nums1Size, int *nums2, int nums2Size)
     value = (double)((double)(mid_value.count1 + mid_value.count2) / 2.0);
 
     return value;
-} 
+}
