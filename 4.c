@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 struct mid_value_t
 {
     int mid;
