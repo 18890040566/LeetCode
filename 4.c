@@ -49,15 +49,31 @@ void uneven_mid(struct mid_value_t *mid_value, int *nums1, int nums1Size, int *n
 {
     if (mid_value->flag == 1)
     {
-        mid_value->count2 += mid_value->mid - mid_value->count1 - 2;
-        mid_value->count1 =  nums2[mid_value->count2];
-        mid_value->count2 =  mid_value->count1;
+        if (mid_value->count1 + mid_value->count2 + 2 == mid_value->mid)
+        {
+            mid_value->count1 =  nums2[mid_value->count2];
+            mid_value->count2 =  mid_value->count1;
+        }
+        else
+        {
+            mid_value->count2 = mid_value->mid - mid_value->count1 - 2;
+            mid_value->count1 =  nums2[mid_value->count2];
+            mid_value->count2 =  mid_value->count1;
+        }
     }
     else if (mid_value->flag == 3)
     {
-        mid_value->count1 += mid_value->mid - mid_value->count2 - 2;
-        mid_value->count1 =  nums1[mid_value->count1];
-        mid_value->count2 =  mid_value->count1;
+        if (mid_value->count1 + mid_value->count2 + 2 == mid_value->mid)
+        {
+            mid_value->count1 =  nums1[mid_value->count1];
+            mid_value->count2 =  mid_value->count1;
+        }
+        else
+        {
+            mid_value->count1 = mid_value->mid - mid_value->count2 - 2;
+            mid_value->count1 =  nums1[mid_value->count1];
+            mid_value->count2 =  mid_value->count1;
+        }
     }
     else if (mid_value->flag == 0)
     {
@@ -75,15 +91,33 @@ void even_mid(struct mid_value_t *mid_value, int *nums1, int nums1Size, int *num
 {
     if (mid_value->flag == 1)
     {
-        mid_value->count2 += mid_value->mid - mid_value->count1 - 2;
-        mid_value->count1 =  nums2[mid_value->count2];
-        mid_value->count2 =  nums2[mid_value->count2 + 1];
+        if (mid_value->count1 + mid_value->count2 + 2 == mid_value->mid)
+        {
+            mid_value->count1 = nums2[mid_value->count2 + 1];
+            mid_value->count2 = nums2[mid_value->count2];
+        }
+        else
+        {
+            mid_value->count2 = mid_value->mid - mid_value->count1 - 2;
+            mid_value->count1 =  mid_value->count2;
+            mid_value->count1 =  nums2[mid_value->count1];
+            mid_value->count2 =  nums2[mid_value->count2 + 1];
+        }
     }
     else if (mid_value->flag == 3)
     {
-        mid_value->count1 += mid_value->mid - mid_value->count2 - 2;
-        mid_value->count1 =  nums1[mid_value->count1];
-        mid_value->count2 =  nums1[mid_value->count1 + 1];
+        if (mid_value->count1 + mid_value->count2 + 2 == mid_value->mid)
+        {
+            mid_value->count2 = nums1[mid_value->count1 + 1];
+            mid_value->count1 = nums1[mid_value->count1];
+        }
+        else
+        {
+            mid_value->count1 = mid_value->mid - mid_value->count2 - 2;
+            mid_value->count2 =  mid_value->count1;
+            mid_value->count1 =  nums1[mid_value->count1];
+            mid_value->count2 =  nums1[mid_value->count2 + 1];
+        }
     }
     else if (mid_value->flag == 0)
     {
@@ -115,7 +149,7 @@ void even_mid(struct mid_value_t *mid_value, int *nums1, int nums1Size, int *num
     }
 }
 
-double func(int *nums1, int nums1Size, int *nums2, int nums2Size)
+double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size)
 {
     double value = 0;;
     struct mid_value_t mid_value;
@@ -124,7 +158,7 @@ double func(int *nums1, int nums1Size, int *nums2, int nums2Size)
     mid_value.count = 0;
     mid_value.count1 = 0;
     mid_value.count2 = 0;
-    mid_value.parity = (nums1Size + nums2Size + 1) & 0x01;
+    mid_value.parity = (nums1Size + nums2Size) & 0x01;
 
     if (mid_value.parity)
         mid_value.mid = (nums1Size + nums2Size + 1) / 2;
@@ -134,17 +168,17 @@ double func(int *nums1, int nums1Size, int *nums2, int nums2Size)
     if (nums1Size == 0)
     {
         if (mid_value.parity)
-            value = nums2[mid_value.mid];
+            value = (double)nums2[mid_value.mid - 1];
         else
-            value = (nums2[mid_value.mid] + nums2[mid_value.mid + 1]) / 2;
+            value = (double)((double)((nums2[mid_value.mid - 1] + nums2[mid_value.mid])) / 2.0);
         return value;
     }
     else if (nums2Size == 0)
     {
         if (mid_value.parity)
-            value = nums1[mid_value.mid];
+            value = (double)(nums1[mid_value.mid - 1]);
         else
-            value = (nums1[mid_value.mid] + nums1[mid_value.mid + 1]) / 2;
+            value = (double)((double)((nums1[mid_value.mid - 1] + nums1[mid_value.mid])) / 2);
         return value;
     }
 
